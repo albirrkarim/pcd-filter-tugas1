@@ -17,6 +17,7 @@ imgAsli = cv2.imread('img/b.png', cv2.IMREAD_GRAYSCALE)
 imgNoisy=noisy("s&p",imgAsli)
 # 1. Show image
 cv2.imshow('Gambar Noisy',imgNoisy)
+print("Mean Squared Error (Noisy) : ",countQuality(imgAsli,imgNoisy))
 # 2. Show histogram
 histr = cv2.calcHist([imgNoisy],[0],None,[256],[0,256])
 plt.plot(histr) 
