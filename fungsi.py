@@ -1,31 +1,23 @@
 import numpy as np
 
 def countQuality(imgA,imgB):
-    
+
     height,width = imgA.shape
-  
     sum=0.0
+
     for i in range(0,height):
         for j in range(0,width):
-            a=0
-            b=0
             a=imgA[i][j]
             b=imgB[i][j]
-            
-            if(a!=b):
-                print("BEDAAAAAA")
 
             sum+=(a-b)**2
-            # print(a)
-            # print(b)
-
-    # print(sum)
+    
     sum=sum/(height*width)
-
-    return sum
+    
+    return round(sum, 2)
 
 def ftAritmatik(image):
-    img = image
+    img = image.copy()
     height,width = image.shape
     height=height-1
     width=width-1
@@ -43,13 +35,14 @@ def ftAritmatik(image):
             sum += image[i+1][j+1]
             sum = sum/9
             sum = int(sum)
-  
+
             img[i][j]=sum
+
     return img
 
 
 def ftMedian(image):
-    img = image
+    img = image.copy()
     height,width = image.shape
     height=height-1
     width=width-1
@@ -92,7 +85,7 @@ def ftMedian(image):
     return img
 
 def ftAlphaTrimmedMean(image):
-    img = image
+    img = image.copy()
     height,width = image.shape
     height=height-1
     width=width-1
