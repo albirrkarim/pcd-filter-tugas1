@@ -1,20 +1,16 @@
 import numpy as np
 
-def countQuality(imgA,imgB):
 
-    height,width = imgA.shape
-    sum=0.0
-
-    for i in range(0,height):
-        for j in range(0,width):
-            a=imgA[i][j]
-            b=imgB[i][j]
-
-            sum+=(a-b)**2
-    
-    sum=sum/(height*width)
-    
-    return round(sum, 2)
+def mse(imageA, imageB):
+	# the 'Mean Squared Error' between the two images is the
+	# sum of the squared difference between the two images;
+	# NOTE: the two images must have the same dimension
+	err = np.sum((imageA.astype("float") - imageB.astype("float")) ** 2)
+	err /= float(imageA.shape[0] * imageA.shape[1])
+	
+	# return the MSE, the lower the error, the more "similar"
+	# the two images are
+	return err
 
 def ftAritmatik(image):
     img = image.copy()
@@ -85,15 +81,23 @@ def ftMedian(image):
     return img
 
 def ftAlphaTrimmedMean(image):
+    #deep copy
     img = image.copy()
+
+    # Get image height and width
     height,width = image.shape
+    
     height=height-1
     width=width-1
     
     a=0
+
+    # loop through
     for i in range(1,height):
         for j in range(1,width):
             arr=[]
+
+            # get pixel value and append it to array
             a= image[i-1][j-1]
             arr.append(a)
 
@@ -120,20 +124,26 @@ def ftAlphaTrimmedMean(image):
 
             a= image[i+1][j+1]
             arr.append(a)
+
+            # Sorting
             arr=QuickSort(arr)
             leng=len(arr)-1
 
-            tengah=int(leng/2)
-            a=0
-            a+=arr[tengah-2]
-            a+=arr[tengah-1]
-            a+=arr[tengah]
-            a+=arr[tengah+1]
-            a+=arr[tengah+2]
+            # get minddle index
+            middleIndex=int(leng/2)
 
-            a=int(a/5)
+            total=0
 
-            img[i][j]=a
+            total+=arr[middleIndex-2]
+            total+=arr[middleIndex-1]
+            total+=arr[middleIndex]
+            total+=arr[middleIndex+1]
+            total+=arr[middleIndex+2]
+
+            total=int(total/5)
+
+            # set pixel value back to image
+            img[i][j]=total
 
     return img
 
@@ -186,13 +196,13 @@ def noisy(noise_typ,image):
         num_salt = np.ceil(amount * image.size * s_vs_p)
         coords = [np.random.randint(0, i - 1, int(num_salt))
                 for i in image.shape]
-        out[coords] = 1
+        out[tuple(coords)] = 1
 
         # Pepper mode
         num_pepper = np.ceil(amount* image.size * (1. - s_vs_p))
         coords = [np.random.randint(0, i - 1, int(num_pepper))
                 for i in image.shape]
-        out[coords] = 0
+        out[tuple(coords)] = 0
         return out
     elif noise_typ == "poisson":
         vals = len(np.unique(image))
